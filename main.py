@@ -1,4 +1,4 @@
-english_to_morse = {
+forward_en = {
     'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.',
     'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..',
     'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.',
@@ -6,30 +6,71 @@ english_to_morse = {
     'Y': '-.--', 'Z': '--..',
     '0': '-----', '1': '.----', '2': '..---', '3': '...--', '4': '....-',
     '5': '.....', '6': '-....', '7': '--...', '8': '---..', '9': '----.',
-    ' ': ' '
+    ' ': ' ', ',': '--..--', '.': '.-.-.-', '?': '..--..', "'": '.----.',
+    '!': '-.-.--', '/': '-..-.', '(': '-.--.', ')': '-.--.-', '&': '.-...',
+    ':': '---...', ';': '-.-.-.', '=': '-...-', '+': '.-.-.', '-': '-....-',
+    '_': '..--.-', '"': '.-..-.', '$': '...-..-', '@': '.--.-.'
 }
 
-russian_to_morse = {
+forward_ru = {
     'А': '.-', 'Б': '-...', 'В': '.--', 'Г': '--.', 'Д': '-..', 'Е': '.',
     'Ж': '...-', 'З': '--..', 'И': '..', 'Й': '.---', 'К': '-.-', 'Л': '.-..',
     'М': '--', 'Н': '-.', 'О': '---', 'П': '.--.', 'Р': '.-.', 'С': '...',
     'Т': '-', 'У': '..-', 'Ф': '..-.', 'Х': '....', 'Ц': '-.-.', 'Ч': '---.',
     'Ш': '----', 'Щ': '--.-', 'Ъ': '--.--', 'Ы': '-.--', 'Ь': '-..-',
-    'Э': '..-..', 'Ю': '..--', 'Я': '.-.-', 'Ё': '.',
+    'Э': '..-..', 'Ю': '..--', 'Я': '.-.-',
     '0': '-----', '1': '.----', '2': '..---', '3': '...--', '4': '....-',
     '5': '.....', '6': '-....', '7': '--...', '8': '---..', '9': '----.',
-    ' ': ' '
+    ' ': ' ', ',': '--..--', '.': '.-.-.-', '?': '..--..', "'": '.----.',
+    '!': '-.-.--', '/': '-..-.', '(': '-.--.', ')': '-.--.-', '=': '-...-',
+    '+': '.-.-.', '-': '-....-', '_': '..--.-', '"': '.-..-.'
 }
 
+reverse_en = {v: k for k, v in forward_en.items()}
+reverse_ru = {v: k for k, v in forward_ru.items()}
 
-def encode_to_morse(text):
-    pass
+MorseCode = {
+    'forward': {
+        'en': forward_en,
+        'ru': forward_ru
+    },
+    'reverse': {
+        'en': reverse_en,
+        'ru': reverse_ru
+    }
+}
 
+def encode_to_morse(text, lang=None):
+    text = text.upper()
+    converter = MorseCode['forward'][lang]
+    return ' '.join(converter.get(char, '') for char in text)
 
-def decode_from_morse(code):
-    pass
-
+def decode_from_morse(code, lang=None):
+    converter = MorseCode['reverse'][lang]
+    return ''.join(converter.get(symbol, ' ') for symbol in code.split(' '))
 
 def main():
-    pass
+    print("Привет! Я помогу тебе понять Азбуку Морзе.\n")
+    print("Выбери язык:\n1. EN\n2. RU\n")
+    lang_choice = int(input())
+    if lang_choice not in [1, 2]:
+        print("Нужно ввести 1 или 2")
+        return
 
+    lang = 'en' if lang_choice == 1 else 'ru'
+
+    print("Выбери что тебе нужно:\n1. Закодировать текст\n2. Декодировать текст\n")
+    operation_choice = int(input())
+    if operation_choice not in [1, 2]:
+        print("Нужно ввести 1 или 2")
+        return
+
+    if operation_choice == 1:
+        text = input("Введите текст:\n")
+        print(encode_to_morse(text, lang))
+    else:
+        code = input("Введите код:\n")
+        print(decode_from_morse(code, lang))
+
+if __name__ == "__main__":
+    main()
