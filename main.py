@@ -99,7 +99,7 @@ def decode_from_morse(code: str, lang: str):
     return ''.join(decoded)
 
 
-def get_language_choice() -> str:
+def get_language_choice():
     """Получает и проверяет выбор языка"""
     while True:
         print("\nВыберите язык:")
@@ -174,6 +174,7 @@ def main():
                 print("\n" + "─" * 50)
                 choice = input("Продолжить? (да/нет): ").lower()
                 if choice not in ('да', 'д', 'yes', 'y'):
+                    print("Программа завершила работу.\nСпасибо, что воспользовались программой!")
                     return
                 print("─" * 50)
 
